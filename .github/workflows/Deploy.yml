@@ -6,7 +6,6 @@ concurrency:
   
 on:
   workflow_dispatch:
-    branches: [ live_01022021 ]
     inputs:
 #      logLevel:
 #        description: 'M2 tag'     
@@ -42,9 +41,10 @@ on:
 
 jobs:
   Enviroment_Prepare:
+    
     runs-on: ubuntu-latest
     steps:
-      - name: Some check on branch
+      - name: Prepare deploy data
         id: branch_check
         run: |
           echo "Running on branch ${{ github.ref }}"
@@ -55,13 +55,18 @@ jobs:
           else
             echo "::error file=app.js,line=1,col=5,endColumn=7::Missing deploy enviroment"
             exit 1;
-          fi         
+          fi
+      - name: Deploy input
+        run: |
+          echo "Enviroment: ${{ steps.branch_check.outputs.enviroment_name }}" 
+          echo "${{ toJSON(github.event.inputs) }}"
     outputs:
       enviroment_name: ${{ steps.branch_check.outputs.enviroment_name }}
 
   Deploy:
     runs-on: ubuntu-latest
     needs: [Enviroment_Prepare]
+    name: "Enviroment: ${{ needs.Enviroment_Prepare.outputs.enviroment_name }}"
     
  #   if: ${{ github.ref == 'refs/heads/master' && always() }}
     environment:
