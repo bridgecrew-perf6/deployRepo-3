@@ -6,7 +6,7 @@ concurrency:
   
 on:
   workflow_dispatch:
-  
+    
     inputs:
 #      logLevel:
 #        description: 'M2 tag'     
@@ -54,8 +54,11 @@ jobs:
           require: 'write'
           check-contributor: true
                 
-      - name: Dump LIVE_SECRET
+      - name: Dump env.LIVE_SECRET
         run: echo '${{ env.LIVE_SECRET }}'
+                        
+      - name: Dump secrets.LIVE_SECRET
+        run: echo '${{ secrets.LIVE_SECRET }}'
         
       - name: Dump TEST_SECRET
         run: echo '${{ secrets.TEST_SECRET }}'  
