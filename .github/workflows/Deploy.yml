@@ -78,7 +78,7 @@ jobs:
           echo ${{ secrets.AWS_FRONTEND_GROUP_NAME }} | sed "s/ /  /g"
       
       - name: Show enviroment
-        run: echo ${{ steps.Enviroment_Prepare.outputs.enviroment_name }}
+        run: echo ${{ needs.Enviroment_Prepare.outputs.enviroment_name }}
       
 
 
