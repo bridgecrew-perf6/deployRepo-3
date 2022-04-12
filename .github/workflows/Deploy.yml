@@ -43,8 +43,7 @@ on:
 jobs:
   First_Job:
     runs-on: ubuntu-latest
-    env:
-      LIVE_SECRET: ${{ env.LIVE_SECRET }}
+
       
     steps:    
     
@@ -56,6 +55,8 @@ jobs:
                 
       - name: Dump LIVE_SECRET
         run: echo '${ LIVE_SECRET }'  
+        env:
+          LIVE_SECRET: ${{ secrets.LIVE_SECRET }}
         
       - name: Dump TEST_SECRET
         run: echo '${{ secrets.TEST_SECRET }}'  
