@@ -85,7 +85,8 @@ jobs:
  #     - name: Composer install
  #       run: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-      
+      - name: Composer install
+        run: cd ./src && composer install
 
 
 
