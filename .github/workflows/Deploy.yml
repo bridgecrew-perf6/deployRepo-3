@@ -44,7 +44,7 @@ jobs:
     
     runs-on: ubuntu-latest
     steps:
-      - name: Check enviroment:
+      - name: Check enviroment
         id: branch_check
         run: |
           echo "Running on branch ${{ github.ref }}"
@@ -61,7 +61,7 @@ jobs:
         run: |
             echo "::error ::M2 and pwa tag is empty."
             exit 1;
-      - name: Deploy data:
+      - name: Deploy data
         run: |
           echo "Enviroment: ${{ steps.branch_check.outputs.enviroment_name }}" 
           echo "${{ toJSON(github.event.inputs) }}"
