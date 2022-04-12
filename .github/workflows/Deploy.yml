@@ -52,7 +52,7 @@ jobs:
             exit 1;
       - name: Deploy data
         run: |
-          echo "::info Enviroment::${{ steps.branch_check.outputs.enviroment_name }}"
+          echo "::info ::Enviroment ${{ steps.branch_check.outputs.enviroment_name }}"
           echo "${{ toJSON(github.event.inputs) }}"
     outputs:
       enviroment_name: ${{ steps.branch_check.outputs.enviroment_name }}
