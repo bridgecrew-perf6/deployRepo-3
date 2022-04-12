@@ -89,11 +89,23 @@ jobs:
         run: cd ./src && composer install
 
       - name: Run php
-        run: cd ./src && php deploy.php
+        run: |
+          cd ./src && 
+          php deploy.php 
+              m2-tag=${{ github.event.inputs.m2-tag }} \
+              pwa-tag=${{ github.event.inputs.pwa-tag }} \
+              maintenance=${{ github.event.inputs.maintenance }} \
+              vendor-update=${{ github.event.inputs.vendor-update }} \
+              skip-suspense=${{ github.event.inputs.skip-suspense }}
         env:
-          AWS_ACCESS_KEY_ID: "This is a AWS_ACCESS_KEY_ID ))"
-
-
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_CONFIG_SET: ${{ secrets.AWS_CONFIG_SET }}
+          AWS_VPC_NAME: ${{ secrets.AWS_VPC_NAME }}
+          AWS_SCRIPTS_GROUP_NAME: ${{ secrets.AWS_SCRIPTS_GROUP_NAME }}
+          AWS_ADMIN_GROUP_NAME: ${{ secrets.AWS_ADMIN_GROUP_NAME }}
+          AWS_FRONTEND_GROUP_NAME: ${{ secrets.AWS_FRONTEND_GROUP_NAME }}
   
 #      - uses: actions-cool/check-user-permission@v2
 #        id: check
