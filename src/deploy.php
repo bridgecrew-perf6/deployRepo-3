@@ -15,7 +15,7 @@ echo 'AWS_FRONTEND_GROUP_NAME:' . getenv('AWS_FRONTEND_GROUP_NAME') . "\n\n";
 
 print_r($argv);
 
-echo "Parse args: \n"
+echo "Parse args: \n";
 
 $options = getopt("h", ['pwa-tag:', 'm2-tag:', 'maintenance', 'help', 'vendor-update', 'skip-suspense', 'show-commands']);
 $optionKeys = array_keys($options);
