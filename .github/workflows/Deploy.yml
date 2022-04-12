@@ -59,8 +59,7 @@ jobs:
       - name: Check tags
         if: ${{ github.event.inputs.m2-tag == '' && github.event.inputs.pwa-tag == '' }}
         run: |
-            echo "::error ::M2 and pwa tag is empty."
-            exit 1;
+            echo "::error ::M2 and PWA tag is empty."
       - name: Deploy data
         run: |
           echo "Enviroment: ${{ steps.branch_check.outputs.enviroment_name }}" 
