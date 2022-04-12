@@ -61,6 +61,11 @@ jobs:
     environment:
         name: ${{ needs.PrepareDeploy.outputs.enviroment_name }}     
     steps:
+      - uses: actions/checkout@v2
+
+      - name: List files
+        run: ls -la
+    
       - name: Show secret data
         run: |
           echo ${{ secrets.AWS_ACCESS_KEY_ID }} | sed "s/ /  /g"
