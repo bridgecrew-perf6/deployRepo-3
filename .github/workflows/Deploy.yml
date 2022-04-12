@@ -89,7 +89,7 @@ jobs:
         run: cd ./src && composer install
 
       - name: Run php
-        run: php deploy.php
+        run: cd ./src && php deploy.php
 
 
   
