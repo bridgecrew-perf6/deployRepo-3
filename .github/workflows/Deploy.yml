@@ -6,7 +6,6 @@ concurrency:
   
 on:
   workflow_dispatch:
-    
     inputs:
 #      logLevel:
 #        description: 'M2 tag'     
@@ -44,7 +43,7 @@ jobs:
   First_Job:
     runs-on: ubuntu-latest
     
-    if: ${{ github.ref == 'refs/heads/master' && always() }}
+ #   if: ${{ github.ref == 'refs/heads/master' && always() }}
     environment:
         name: live
       
