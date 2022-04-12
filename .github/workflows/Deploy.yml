@@ -53,8 +53,14 @@ jobs:
           echo "Maintenance: ${{ github.event.inputs.maintenance }}"
                 
       - name: Test
-        run: echo "::notice parameter1={github.event.inputs.pwa-tag},parameter2=${{ github.event.inputs.m2-tag }}::command value"
-        
+        run: |
+              echo "::notice::Enviroment: ${{ steps.branch_check.outputs.enviroment_name }}" \
+              "M2 Tag: ${{ github.event.inputs.m2-tag }}" \
+              "PWA Tag: ${{ github.event.inputs.pwa-tag }}" \
+              "Vendor update: ${{ github.event.inputs.vendor-update }}" \
+              "Skip suspense: ${{ github.event.inputs.skip-suspense }}" \
+              "Maintenance: ${{ github.event.inputs.maintenance }}"              
+              
     outputs:
       enviroment_name: ${{ steps.branch_check.outputs.enviroment_name }}
   Deploy:
