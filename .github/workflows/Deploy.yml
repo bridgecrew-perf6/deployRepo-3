@@ -1,0 +1,90 @@
+name: Deploy
+
+concurrency: 
+  group: trololo_group_key
+  cancel-in-progress: true
+  
+on:
+  workflow_dispatch:
+  
+    inputs:
+#      logLevel:
+#        description: 'M2 tag'     
+#        required: true
+#        default: 'warning' 
+#        type: choice
+#        options:
+#        - info
+#        - warning
+#        - debug 
+      m2-tag:
+        description: 'M2 tag'     
+        required: false
+        type: text     
+      pwa-tag:
+        description: 'Pwa tag'     
+        required: false
+        type: text      
+      vendor-update:
+        description: 'Vendor update'
+        required: false 
+        type: boolean
+      skip-suspense:
+        description: 'Skip suspense'
+        required: false 
+        type: boolean
+      maintenance:
+          description: 'Maintenance'
+          required: false 
+          type: boolean
+#    paths-ignore:
+#      - '.github/**'
+
+jobs:
+  First_Job:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+    steps:    
+    
+      - uses: actions-cool/check-user-permission@v2
+        id: check
+        with:
+          require: 'write'
+          check-contributor: true
+          
+      - name: Dump GITHUB_TOKEN
+        run: echo '${{ GITHUB_TOKEN }}'            
+        
+      - name: Dump steps check-user-permission
+        run: echo '${{ toJSON(steps.check.outputs) }}'    
+        
+      - name: print warning
+        run: echo "::notice file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
+      
+#      - name: Reboot
+#        continue-on-error: true
+#        run: sudo reboot
+ 
+      - name: Print GITHUB_REF_TYPE
+        run: echo '$GITHUB_REF_TYPE'
+        
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo '${{ toJSON(github) }}'
+        
+      - name: Dump job context
+        run: echo '${{ toJSON(job) }}'
+        
+      - name: Dump steps context
+        run: echo '${{ toJSON(steps) }}'    
+        
+      - name: Dump runner context
+        run: echo '${{ toJSON(runner) }}'
+        
+      - name: Dump strategy context
+        run: echo '${{ toJSON(strategy) }}'
+        
+      - name: Dump matrix context
+        run: echo '${{ toJSON(matrix) }}'
