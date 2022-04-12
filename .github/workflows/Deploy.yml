@@ -74,7 +74,8 @@ jobs:
       - name: Show enviroment
         run: echo ${{ needs.PrepareDeploy.outputs.enviroment_name }}
 
-
+      - name: Apt
+        run: apt-get update && apt -y install mc rsync
 
 
 
@@ -83,11 +84,11 @@ jobs:
 
 
   
-      - uses: actions-cool/check-user-permission@v2
-        id: check
-        with:
-          require: 'write'
-          check-contributor: true
+#      - uses: actions-cool/check-user-permission@v2
+#        id: check
+#        with:
+#          require: 'write'
+#          check-contributor: true
 
 
 
