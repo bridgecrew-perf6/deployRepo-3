@@ -6,6 +6,7 @@ concurrency:
   
 on:
   workflow_dispatch:
+    branches: [ live_01022021 ]
     inputs:
 #      logLevel:
 #        description: 'M2 tag'     
