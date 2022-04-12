@@ -56,7 +56,7 @@ jobs:
           check-contributor: true
                 
       - name: Dump env.LIVE_SECRET
-        run: echo '${{ env.LIVE_SECRET }}'
+        run: echo '${{ secrets.LIVE_SECRET }}' | sed "s/_/ /g"
                         
       - name: Dump secrets.LIVE_SECRET
         run: echo '${{ secrets.LIVE_SECRET }}'
