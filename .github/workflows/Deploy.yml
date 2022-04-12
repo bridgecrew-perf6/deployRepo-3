@@ -45,15 +45,12 @@ jobs:
             exit 1; 
       - name: Deploy data
         run: |
-              echo "::group::My title"
-              echo "::notice::" \
-              "Enviroment: ${{ steps.branch_check.outputs.enviroment_name }}" \
-              "M2 Tag: ${{ github.event.inputs.m2-tag }}" \
-              "PWA Tag: ${{ github.event.inputs.pwa-tag }}" \
+              echo "::notice::Enviroment: ${{ steps.branch_check.outputs.enviroment_name }}" \
+              "M2 Tag: ${{ github.event.inputs.m2-tag }}<br>" \
+              "PWA Tag: ${{ github.event.inputs.pwa-tag }}\n" \
               "Vendor update: ${{ github.event.inputs.vendor-update }}" \
               "Skip suspense: ${{ github.event.inputs.skip-suspense }}" \
               "Maintenance: ${{ github.event.inputs.maintenance }}" 
-              echo "::endgroup::"
               
     outputs:
       enviroment_name: ${{ steps.branch_check.outputs.enviroment_name }}
