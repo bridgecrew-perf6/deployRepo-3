@@ -45,7 +45,7 @@ jobs:
             exit 1; 
       - name: Deploy data
         run: |
-              echo "::group::" \n
+              echo "::group::" \
               "::notice::Enviroment: ${{ steps.branch_check.outputs.enviroment_name }}" \
               "M2 Tag: ${{ github.event.inputs.m2-tag }}" \
               "PWA Tag: ${{ github.event.inputs.pwa-tag }}" \
