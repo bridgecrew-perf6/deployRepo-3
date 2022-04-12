@@ -62,9 +62,8 @@ jobs:
     needs: [Enviroment_Prepare]
     
  #   if: ${{ github.ref == 'refs/heads/master' && always() }}
- #   environment:
- #       name: live
-      
+    environment:
+        name: ${{ needs.Enviroment_Prepare.outputs.enviroment_name }}     
     steps:    
   
       - name: Show secret data
