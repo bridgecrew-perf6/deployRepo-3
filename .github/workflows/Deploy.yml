@@ -52,7 +52,8 @@ jobs:
           elif [ "${{ github.ref }}" = "refs/heads/staging" ]; then
             echo "::set-output name=enviroment_name::stage"
           else
-            echo "::notice file=app.js,line=1,col=5,endColumn=7::Missing branch"
+            echo "::error file=app.js,line=1,col=5,endColumn=7::Missing deploy enviroment"
+            exit 1;
           fi         
     outputs:
       enviroment_name: ${{ steps.branch_check.outputs.enviroment_name }}
