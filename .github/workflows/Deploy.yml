@@ -74,11 +74,13 @@ jobs:
       - name: Show enviroment
         run: echo ${{ needs.PrepareDeploy.outputs.enviroment_name }}
 
-      - name: Apt
-        run: sudo apt-get update && sudo apt -y install mc rsync
+ #     - name: Apt
+ #       run: sudo apt-get update && sudo apt -y install mc rsync
+    
+ #     - name: Composer install
+ #       run: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-
-
+      
 
 
 
