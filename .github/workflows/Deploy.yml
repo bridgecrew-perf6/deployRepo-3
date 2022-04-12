@@ -52,11 +52,11 @@ jobs:
             exit 1;
       - name: Deploy data
         run: |
-          echo "Enviroment: ${{ steps.branch_check.outputs.enviroment_name }}
-          echo "M2 Tag: ${{ github.event.inputs.m2-tag }}
-          echo "PWA Tag: ${{ github.event.inputs.pwa-tag }}
-          echo "Vendor update: ${{ github.event.inputs.vendor-update }}
-          echo "Skip suspense: ${{ github.event.inputs.skip-suspense }}
+          echo "Enviroment: ${{ steps.branch_check.outputs.enviroment_name }}"
+          echo "M2 Tag: ${{ github.event.inputs.m2-tag }}"
+          echo "PWA Tag: ${{ github.event.inputs.pwa-tag }}"
+          echo "Vendor update: ${{ github.event.inputs.vendor-update }}"
+          echo "Skip suspense: ${{ github.event.inputs.skip-suspense }}"
           echo "Maintenance: ${{ github.event.inputs.maintenance }}"
           echo "::set-output trOLOLOLO";
     outputs:
