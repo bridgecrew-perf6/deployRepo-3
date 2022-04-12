@@ -17,17 +17,13 @@ on:
         type: text      
       vendor-update:
         description: 'Vendor update'
-        required: false 
         type: boolean
       skip-suspense:
         description: 'Skip suspense'
-        required: false 
         type: boolean
       maintenance:
           description: 'Maintenance'
-          required: false 
           type: boolean
-          
 jobs:
   Enviroment_Prepare:
     
@@ -58,7 +54,6 @@ jobs:
           echo "Vendor update: ${{ github.event.inputs.vendor-update }}"
           echo "Skip suspense: ${{ github.event.inputs.skip-suspense }}"
           echo "Maintenance: ${{ github.event.inputs.maintenance }}"
-          echo "::set-output trOLOLOLO";
     outputs:
       enviroment_name: ${{ steps.branch_check.outputs.enviroment_name }}
 
