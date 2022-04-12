@@ -44,7 +44,7 @@ jobs:
     
     runs-on: ubuntu-latest
     steps:
-      - name: Prepare deploy data
+      - name: Check enviroment:
         id: branch_check
         run: |
           echo "Running on branch ${{ github.ref }}"
@@ -56,7 +56,12 @@ jobs:
             echo "::error file=app.js,line=1,col=5,endColumn=7::Missing deploy enviroment"
             exit 1;
           fi
-      - name: Deploy input
+      - name: Check tags
+        if: ${{ github.event.inputs.m2-tag == '' && github.event.inputs.pwa-tag == '' }}
+        run: |
+            echo "::error ::M2 and pwa tag is empty."
+            exit 1;
+      - name: Deploy data:
         run: |
           echo "Enviroment: ${{ steps.branch_check.outputs.enviroment_name }}" 
           echo "${{ toJSON(github.event.inputs) }}"
@@ -66,7 +71,7 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     needs: [Enviroment_Prepare]
-    name: "Deploy: ${{ needs.Enviroment_Prepare.outputs.enviroment_name }} m2 tag: ${{ github.event.inputs.m2-tag }}; pwa tag: ${{ github.event.inputs.pwa-tag }}"
+    name: "Deploy: ${{ needs.Enviroment_Prepare.outputs.enviroment_name }} m2 tag: ${{ github.event.inputs.m2-tag }} pwa tag: ${{ github.event.inputs.pwa-tag }}"
     
  #   if: ${{ github.ref == 'refs/heads/master' && always() }}
     environment:
