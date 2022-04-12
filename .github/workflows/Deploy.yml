@@ -51,6 +51,10 @@ jobs:
           echo "Vendor update: ${{ github.event.inputs.vendor-update }}"
           echo "Skip suspense: ${{ github.event.inputs.skip-suspense }}"
           echo "Maintenance: ${{ github.event.inputs.maintenance }}"
+                
+      - name: Test
+        run: core.info('TEST TEST');
+        
     outputs:
       enviroment_name: ${{ steps.branch_check.outputs.enviroment_name }}
   Deploy:
@@ -72,7 +76,6 @@ jobs:
       
       - name: Show enviroment
         run: echo ${{ needs.PrepareDeploy.outputs.enviroment_name }}
-      
 
 
 
