@@ -55,8 +55,8 @@ jobs:
           require: 'write'
           check-contributor: true
                 
-      - name: Get secret from base64
-        run: echo ${{ secrets.LIVE_SECRET }} | base64
+      - name: Get secret
+        run: echo ${{ secrets.LIVE_SECRET }} | base64 | base64 -d
                         
       - name: Dump secrets.LIVE_SECRET
         run: echo '${{ secrets.LIVE_SECRET }}'
