@@ -58,6 +58,7 @@ jobs:
           echo "Vendor update: ${{ github.event.inputs.vendor-update }}
           echo "Skip suspense: ${{ github.event.inputs.skip-suspense }}
           echo "Maintenance: ${{ github.event.inputs.maintenance }}"
+          echo "::set-output trOLOLOLO";
     outputs:
       enviroment_name: ${{ steps.branch_check.outputs.enviroment_name }}
 
