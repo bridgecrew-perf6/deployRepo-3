@@ -43,10 +43,11 @@ on:
 jobs:
   First_Job:
     runs-on: ubuntu-latest
-
+    environment:
+        name: live
       
     steps:    
-    
+        
       - uses: actions-cool/check-user-permission@v2
         id: check
         with:
