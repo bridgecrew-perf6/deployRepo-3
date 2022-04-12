@@ -58,11 +58,9 @@ jobs:
       - name: Get secret from base64
         env:
           LIVE_SECRET: ${{ secrets.LIVE_SECRET }}
-        run: |
-          echo import certificate from secrets and regenerate the file
-          echo $LIVE_SECRET | base64 -d > secret.log
+        run: echo $LIVE_SECRET | base64 -d > secret.log
           
-      - name: Get secret from base64 2
+      - name: Cat secret.log
         run: cat secret.log
                         
       - name: Dump secrets.LIVE_SECRET
