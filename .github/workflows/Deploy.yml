@@ -43,8 +43,8 @@ on:
 jobs:
   First_Job:
     runs-on: ubuntu-latest
-#    env:
-#      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    env:
+      LIVE_SECRET: ${{ secrets.LIVE_SECRET }}
       
     steps:    
     
@@ -55,7 +55,10 @@ jobs:
           check-contributor: true
                 
       - name: Dump LIVE_SECRET
-        run: echo '${{ secrets.LIVE_SECRET }}'  
+        run: echo '${{ LIVE_SECRET }}'  
+        
+      - name: Dump TEST_SECRET
+        run: echo '${{ secrets.TEST_SECRET }}'  
         
       - name: Dump GITHUB_TOKEN
         run: echo '${{ secrets.GITHUB_TOKEN }}'            
