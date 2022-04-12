@@ -44,7 +44,7 @@ jobs:
   First_Job:
     runs-on: ubuntu-latest
     env:
-      LIVE_SECRET: ${{ secrets.LIVE_SECRET }}
+      LIVE_SECRET: ${{ env.LIVE_SECRET }}
       
     steps:    
     
