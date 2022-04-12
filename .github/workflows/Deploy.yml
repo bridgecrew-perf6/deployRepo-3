@@ -1,9 +1,7 @@
 name: Deploy
-
 concurrency: 
   group: trololo_group_key
   cancel-in-progress: true
-  
 on:
   workflow_dispatch:
     inputs:
@@ -25,8 +23,7 @@ on:
           description: 'Maintenance'
           type: boolean
 jobs:
-  Enviroment_Prepare:
-    
+  PrepareDeploy:
     runs-on: ubuntu-latest
     steps:
       - name: Check enviroment
@@ -56,15 +53,13 @@ jobs:
           echo "Maintenance: ${{ github.event.inputs.maintenance }}"
     outputs:
       enviroment_name: ${{ steps.branch_check.outputs.enviroment_name }}
-
   Deploy:
     runs-on: ubuntu-latest
-    needs: [Enviroment_Prepare]
-    name: "Deploy: ${{ needs.Enviroment_Prepare.outputs.enviroment_name }}"
+    needs: PrepareDeploy
+    name: "Deploy: ${{ needs.PrepareDeploy.outputs.enviroment_name }}"
     environment:
-        name: ${{ needs.Enviroment_Prepare.outputs.enviroment_name }}     
-    steps:    
-  
+        name: ${{ needs.PrepareDeploy.outputs.enviroment_name }}     
+    steps:
       - name: Show secret data
         run: |
           echo ${{ secrets.AWS_ACCESS_KEY_ID }} | sed "s/ /  /g"
@@ -76,7 +71,7 @@ jobs:
           echo ${{ secrets.AWS_FRONTEND_GROUP_NAME }} | sed "s/ /  /g"
       
       - name: Show enviroment
-        run: echo ${{ needs.Enviroment_Prepare.outputs.enviroment_name }}
+        run: echo ${{ needs.PrepareDeploy.outputs.enviroment_name }}
       
 
 
