@@ -75,7 +75,7 @@ jobs:
         run: echo ${{ needs.PrepareDeploy.outputs.enviroment_name }}
 
       - name: Apt
-        run: sudo apt-get update && apt -y install mc rsync
+        run: sudo apt-get update && sudo apt -y install mc rsync
 
 
 
