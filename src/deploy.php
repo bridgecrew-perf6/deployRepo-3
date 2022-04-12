@@ -15,5 +15,25 @@ echo 'AWS_FRONTEND_GROUP_NAME:' . getenv('AWS_FRONTEND_GROUP_NAME') . "\n\n";
 
 print_r($argv);
 
+echo "Parse args: \n"
+
+$options = getopt("h", ['pwa-tag:', 'm2-tag:', 'maintenance', 'help', 'vendor-update', 'skip-suspense', 'show-commands']);
+$optionKeys = array_keys($options);
+
+if (count(array_intersect(['maintenance'], $optionKeys)) > 0) {
+  echo "Need maintenance\n";
+}
+
+if (count(array_intersect(['vendor-update'], $optionKeys)) > 0) {
+  echo "Need vendor-update\n";
+}
+
+if (count(array_intersect(['skip-suspense'], $optionKeys)) > 0) {
+  echo "Need skip-suspense\n";
+}
+
+echo "end.\n";
+
+
 print_r($_ENV);
 print_r($_SERVER);
