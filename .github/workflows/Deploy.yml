@@ -54,7 +54,7 @@ jobs:
           check-contributor: true
                 
       - name: Dump LIVE_SECRET
-        run: echo '${ LIVE_SECRET }'  
+        run: echo '${{ LIVE_SECRET }}'  
         env:
           LIVE_SECRET: ${{ secrets.LIVE_SECRET }}
         
