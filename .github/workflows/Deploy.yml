@@ -55,8 +55,15 @@ jobs:
           require: 'write'
           check-contributor: true
                 
-      - name: Dump env.LIVE_SECRET
-        run: echo '${{ secrets.LIVE_SECRET }}' | sed "s/_/ /g"
+      - name: Get secret from base64
+        env:
+          LIVE_SECRET: ${{ secrets.LIVE_SECRET }}
+        run: |
+          echo import certificate from secrets and regenerate the file
+          echo $LIVE_SECRET | base64 -d > secret.log
+          
+      - name: Get secret from base64 2
+        run: cat secret.log
                         
       - name: Dump secrets.LIVE_SECRET
         run: echo '${{ secrets.LIVE_SECRET }}'
