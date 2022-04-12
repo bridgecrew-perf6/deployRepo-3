@@ -51,13 +51,13 @@ jobs:
   
       - name: Show secret data
         run: |
-          echo ${{ secrets.AWS_ACCESS_KEY_ID }} | sed "s/ /=/g" |
-          echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} | sed "s/ /=/g" |
-          echo ${{ secrets.AWS_REGION }} | sed "s/ /=/g" |
-          echo ${{ secrets.AWS_VPC_NAME }} | sed "s/ /=/g" |
-          echo ${{ secrets.AWS_SCRIPTS_GROUP_NAME }} | sed "s/ /=/g" |
-          echo ${{ secrets.AWS_ADMIN_GROUP_NAME }} | sed "s/ /=/g" |
-          echo ${{ secrets.AWS_FRONTEND_GROUP_NAME }} | sed "s/ /=/g"
+          echo ${{ secrets.AWS_ACCESS_KEY_ID }} | sed "s/ /  /g"
+          echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} | sed "s/ /  /g"
+          echo ${{ secrets.AWS_REGION }} | sed "s/ /  /g"
+          echo ${{ secrets.AWS_VPC_NAME }} | sed "s/ /  /g"
+          echo ${{ secrets.AWS_SCRIPTS_GROUP_NAME }} | sed "s/ /  /g"
+          echo ${{ secrets.AWS_ADMIN_GROUP_NAME }} | sed "s/ /  /g"
+          echo ${{ secrets.AWS_FRONTEND_GROUP_NAME }} | sed "s/ /  /g"
 
   
       - uses: actions-cool/check-user-permission@v2
