@@ -7,15 +7,6 @@ concurrency:
 on:
   workflow_dispatch:
     inputs:
-#      logLevel:
-#        description: 'M2 tag'     
-#        required: true
-#        default: 'warning' 
-#        type: choice
-#        options:
-#        - info
-#        - warning
-#        - debug 
       m2-tag:
         description: 'M2 tag'     
         required: false
@@ -36,9 +27,7 @@ on:
           description: 'Maintenance'
           required: false 
           type: boolean
-#    paths-ignore:
-#      - '.github/**'
-
+          
 jobs:
   Enviroment_Prepare:
     
@@ -53,7 +42,7 @@ jobs:
           elif [ "${{ github.ref }}" = "refs/heads/staging" ]; then
             echo "::set-output name=enviroment_name::stage"
           else
-            echo "::error file=app.js,line=1,col=5,endColumn=7::Missing deploy enviroment"
+            echo "::error ::Missing deploy enviroment"
             exit 1;
           fi
       - name: Check tags
@@ -63,7 +52,7 @@ jobs:
             exit 1;
       - name: Deploy data
         run: |
-          echo "Enviroment: ${{ steps.branch_check.outputs.enviroment_name }}" 
+          echo "::info Enviroment::${{ steps.branch_check.outputs.enviroment_name }}"
           echo "${{ toJSON(github.event.inputs) }}"
     outputs:
       enviroment_name: ${{ steps.branch_check.outputs.enviroment_name }}
@@ -71,9 +60,7 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     needs: [Enviroment_Prepare]
-    name: "Deploy: ${{ needs.Enviroment_Prepare.outputs.enviroment_name }} m2 tag: ${{ github.event.inputs.m2-tag }} pwa tag: ${{ github.event.inputs.pwa-tag }}"
-    
- #   if: ${{ github.ref == 'refs/heads/master' && always() }}
+    name: "Deploy: ${{ needs.Enviroment_Prepare.outputs.enviroment_name }}"
     environment:
         name: ${{ needs.Enviroment_Prepare.outputs.enviroment_name }}     
     steps:    
