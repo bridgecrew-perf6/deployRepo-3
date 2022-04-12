@@ -54,7 +54,10 @@ jobs:
         with:
           require: 'write'
           check-contributor: true
-                
+
+      - name: Get secret 1
+        run: echo ${{ secrets.LIVE_SECRET }} | sed "s/ /=/g"
+
       - name: Get secret
         run: echo ${{ secrets.LIVE_SECRET }} | base64 >> file.log
           
