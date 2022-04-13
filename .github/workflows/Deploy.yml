@@ -98,13 +98,13 @@ jobs:
           if [[ "${{ github.event.inputs.pwa-tag }}" != "" ]]; then
               PHP_DEPLOY_COMMAND+=" --pwa-tag=${{ github.event.inputs.pwa-tag }}"
           fi
-          if [[ ${{ github.event.inputs.maintenance }} ]]; then
+          if ${{ github.event.inputs.maintenance }}; then
               PHP_DEPLOY_COMMAND+=" --maintenance"
           fi
-          if [[ ${{ github.event.inputs.vendor-update }} ]]; then
+          if ${{ github.event.inputs.vendor-update }}; then
               PHP_DEPLOY_COMMAND+=" --vendor-update"
           fi
-          if [[ ${{ github.event.inputs.skip-suspense }} ]]; then
+          if ${{ github.event.inputs.skip-suspense }}; then
               PHP_DEPLOY_COMMAND+=" --skip-suspense"
           fi
           echo $PHP_DEPLOY_COMMAND;
