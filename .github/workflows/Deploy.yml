@@ -110,7 +110,7 @@ jobs:
           if ${{ github.event.inputs.skip-suspense }}; then
               PHP_DEPLOY_COMMAND+=" --skip-suspense"
           fi
-          cd ./src
+          cd ./docker-images/aws/php
           php $PHP_DEPLOY_COMMAND
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
