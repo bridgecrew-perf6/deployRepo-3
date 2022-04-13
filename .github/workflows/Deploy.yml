@@ -107,20 +107,8 @@ jobs:
           if ${{ github.event.inputs.skip-suspense }}; then
               PHP_DEPLOY_COMMAND+=" --skip-suspense"
           fi
-          
-      - name: Echo PHP_DEPLOY_COMMAND
-        run: echo $PHP_DEPLOY_COMMAND
-        
-      - name: Run php
-        run: |
-          cd ./src && 
-          echo $PHP_DEPLOY_COMMAND &&
-          "php deploy.php \
-          --m2-tag=${{ github.event.inputs.m2-tag }} \
-          --pwa-tag=${{ github.event.inputs.pwa-tag }} \
-          --maintenance=${{ github.event.inputs.maintenance }} \
-          --vendor-update=${{ github.event.inputs.vendor-update }} \
-          --skip-suspense=${{ github.event.inputs.skip-suspense }}"
+          cd ./src
+          php $PHP_DEPLOY_COMMAND
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
