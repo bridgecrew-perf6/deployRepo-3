@@ -112,6 +112,7 @@ jobs:
           fi
           cd ./docker-images/aws/php
           php $PHP_DEPLOY_COMMAND
+          echo "Return code: $?"
           if [ $? != 0 ]; then
               printf "Error when executing command: '$command' $?"
               exit $ERROR_CODE
