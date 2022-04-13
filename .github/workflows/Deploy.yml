@@ -112,6 +112,10 @@ jobs:
           fi
           cd ./docker-images/aws/php
           php $PHP_DEPLOY_COMMAND
+          if [ $? != 0 ]; then
+              printf "Error when executing command: '$command' $?"
+              exit $ERROR_CODE
+          fi
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
