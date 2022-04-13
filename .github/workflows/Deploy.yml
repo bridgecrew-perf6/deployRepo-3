@@ -88,6 +88,14 @@ jobs:
 
       - name: Composer install
         run: cd ./src && composer install
+      
+      - name: Prepare commands
+        run: |
+          echo "php deploy.php " >> $PHP_COMMAND
+          if [[ ${{ github.event.inputs.m2-tag }} ]]; then
+              echo " --m2-tag=${{ github.event.inputs.m2-tag }}" >> "$PHP_COMMAND"
+          fi
+          echo $PHP_COMMAND;
 
       - name: Run php
         run: |
