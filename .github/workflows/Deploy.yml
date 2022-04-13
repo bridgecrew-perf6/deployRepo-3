@@ -89,7 +89,7 @@ jobs:
       - name: Composer install
         run: cd ./src && composer install
       
-      - name: Prepare commands
+      - name: Run deploy.php
         run: |
           PHP_DEPLOY_COMMAND="deploy.php"
           if [[ "${{ github.event.inputs.m2-tag }}" != "" ]]; then
