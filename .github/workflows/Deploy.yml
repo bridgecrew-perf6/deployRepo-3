@@ -95,7 +95,7 @@ jobs:
           if [[ ${{ github.event.inputs.m2-tag }} ]]; then
               echo " --m2-tag=${{ github.event.inputs.m2-tag }}" >> PHP_COMMAND
           fi
-          echo PHP_COMMAND;
+          echo $PHP_COMMAND;
 
       - name: Run php
         run: |
