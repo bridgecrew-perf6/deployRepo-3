@@ -92,12 +92,12 @@ jobs:
       - name: Run php
         run: |
           cd ./src && 
-          "php deploy.php" 
+          "php deploy.php
           --m2-tag=${{ github.event.inputs.m2-tag }} 
           --pwa-tag=${{ github.event.inputs.pwa-tag }} 
           --maintenance=${{ github.event.inputs.maintenance }} 
           --vendor-update=${{ github.event.inputs.vendor-update }} 
-          --skip-suspense=${{ github.event.inputs.skip-suspense }}
+          --skip-suspense=${{ github.event.inputs.skip-suspense }}"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
