@@ -111,7 +111,7 @@ jobs:
               PHP_DEPLOY_COMMAND+=" --skip-suspense"
           fi
           cd ./docker-images/aws/php
-          php $PHP_DEPLOY_COMMAND
+          ${php $PHP_DEPLOY_COMMAND}
           echo "Return code: $?"
           if [ $? != 0 ]; then
               printf "Error when executing command: '$command' $?"
