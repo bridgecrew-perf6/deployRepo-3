@@ -91,7 +91,7 @@ jobs:
       
       - name: Prepare commands
         run: |
-          PHP_DEPLOY_COMMAND="php deploy.php"
+          PHP_DEPLOY_COMMAND="deploy.php"
           if [[ "${{ github.event.inputs.m2-tag }}" != "" ]]; then
               PHP_DEPLOY_COMMAND+=" --m2-tag=${{ github.event.inputs.m2-tag }}"
           fi
