@@ -58,6 +58,7 @@ jobs:
         with:
           repository: 'AlexeyShishkin2022/deploy'
           ref: 'refs/heads/main'
+          path: 'docker-images/aws/php'
           
       - name: TEMP List files
         run: ls -la
