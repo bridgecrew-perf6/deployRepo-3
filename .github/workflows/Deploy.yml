@@ -51,7 +51,16 @@ jobs:
               "Vendor update: ${{ github.event.inputs.vendor-update }};" \
               "Skip suspense: ${{ github.event.inputs.skip-suspense }};" \
               "Maintenance: ${{ github.event.inputs.maintenance }}" 
-              
+   
+   
+      
+      - uses: actions/checkout@v3
+        with:
+          repository: 'AlexeyShishkin2022/deploy'
+      - name: TEMP List files
+        run: ls -la
+    
+
     outputs:
       enviroment_name: ${{ steps.branch_check.outputs.enviroment_name }}
   Deploy:
