@@ -51,19 +51,7 @@ jobs:
               "Vendor update: ${{ github.event.inputs.vendor-update }};" \
               "Skip suspense: ${{ github.event.inputs.skip-suspense }};" \
               "Maintenance: ${{ github.event.inputs.maintenance }}" 
-   
-   
-      
-      - uses: actions/checkout@v3
-        with:
-          repository: 'AlexeyShishkin2022/deploy'
-          ref: 'refs/heads/main'
-          path: 'docker-images/aws/php'
-          
-      - name: TEMP List files
-        run: ls -la
-    
-
+ 
     outputs:
       enviroment_name: ${{ steps.branch_check.outputs.enviroment_name }}
   Deploy:
@@ -74,8 +62,11 @@ jobs:
         name: ${{ needs.PrepareDeploy.outputs.enviroment_name }}     
     steps:
     
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
+        with:
+          repository: 'AlexeyShishkin2022/deploy'
+          ref: 'refs/heads/main'
+      
       - name: TEMP List files
         run: ls -la
     
@@ -99,7 +90,7 @@ jobs:
  #       run: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
       - name: Composer install
-        run: cd ./src && composer install
+        run: cd ./docker-images/aws/php && composer install
       
       - name: Run deploy.php
         run: |
