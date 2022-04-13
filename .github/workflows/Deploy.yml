@@ -92,7 +92,7 @@ jobs:
       - name: Run php
         run: |
           cd ./src && 
-          "php deploy.php
+          "php deploy.php \
           --m2-tag=${{ github.event.inputs.m2-tag }} \
           --pwa-tag=${{ github.event.inputs.pwa-tag }} \
           --maintenance=${{ github.event.inputs.maintenance }} \
