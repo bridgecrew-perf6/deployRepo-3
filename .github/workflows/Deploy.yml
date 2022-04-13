@@ -107,7 +107,10 @@ jobs:
           if ${{ github.event.inputs.skip-suspense }}; then
               PHP_DEPLOY_COMMAND+=" --skip-suspense"
           fi
-
+          
+      - name: Echo PHP_DEPLOY_COMMAND
+        run: echo $PHP_DEPLOY_COMMAND
+        
       - name: Run php
         run: |
           cd ./src && 
