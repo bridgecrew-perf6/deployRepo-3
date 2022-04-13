@@ -94,7 +94,7 @@ jobs:
       
       - name: Run deploy.php
         run: |
-          PHP_DEPLOY_COMMAND="php deploy.php"
+          PHP_DEPLOY_COMMAND="deploy.php"
           if [[ "${{ github.event.inputs.m2-tag }}" != "" ]]; then
               PHP_DEPLOY_COMMAND+=" --m2-tag=${{ github.event.inputs.m2-tag }}"
           fi
@@ -111,7 +111,7 @@ jobs:
               PHP_DEPLOY_COMMAND+=" --skip-suspense"
           fi
           cd ./docker-images/aws/php
-          ${$PHP_DEPLOY_COMMAND}
+          php $PHP_DEPLOY_COMMAND
           echo "Return code: $?"
           if [ $? != 0 ]; then
               printf "Error when executing command: '$command' $?"
