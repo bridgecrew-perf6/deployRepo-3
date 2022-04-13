@@ -35,5 +35,8 @@ if (count(array_intersect(['skip-suspense'], $optionKeys)) > 0) {
 echo "end.\n";
 
 
+sleep(10);
+
+
 print_r($_ENV);
 print_r($_SERVER);
