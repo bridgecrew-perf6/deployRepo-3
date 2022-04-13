@@ -1,7 +1,7 @@
 name: Deploy
 concurrency: 
-  group: trololo_group_key
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+#  cancel-in-progress: true
 on:
   workflow_dispatch:
     inputs:
@@ -61,12 +61,13 @@ jobs:
     environment:
         name: ${{ needs.PrepareDeploy.outputs.enviroment_name }}     
     steps:
+    
       - uses: actions/checkout@v2
 
-      - name: List files
+      - name: TEMP List files
         run: ls -la
     
-      - name: Show secret data
+      - name: TEMP Show secret data
         run: |
           echo ${{ secrets.AWS_ACCESS_KEY_ID }} | sed "s/ /  /g"
           echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} | sed "s/ /  /g"
@@ -101,61 +102,3 @@ jobs:
           AWS_SCRIPTS_GROUP_NAME: ${{ secrets.AWS_SCRIPTS_GROUP_NAME }}
           AWS_ADMIN_GROUP_NAME: ${{ secrets.AWS_ADMIN_GROUP_NAME }}
           AWS_FRONTEND_GROUP_NAME: ${{ secrets.AWS_FRONTEND_GROUP_NAME }}
-  
-#      - uses: actions-cool/check-user-permission@v2
-#        id: check
-#        with:
-#          require: 'write'
-#          check-contributor: true
-
-
-
-      - name: Get secret 1
-        run: echo ${{ secrets.LIVE_SECRET }} | sed "s/ /=/g"
-
-      - name: Get secret
-        run: echo ${{ secrets.LIVE_SECRET }} | base64 >> file.log
-          
-      - name: Show file secret
-        run: cat file.log | base64 -d | sed "s/ /=/g"
-                        
-      - name: Dump secrets.LIVE_SECRET
-        run: echo '${{ secrets.LIVE_SECRET }}'
-        
-      - name: Dump TEST_SECRET
-        run: echo '${{ secrets.TEST_SECRET }}'  
-        
-      - name: Dump GITHUB_TOKEN
-        run: echo '${{ secrets.GITHUB_TOKEN }}'            
-        
-      - name: Dump steps check-user-permission
-        run: echo '${{ toJSON(steps.check.outputs) }}'    
-        
-      - name: print warning
-        run: echo "::notice file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
-      
-#      - name: Reboot
-#        continue-on-error: true
-#        run: sudo reboot
- 
-      - name: Print GITHUB_REF_TYPE
-        run: echo '$GITHUB_REF_TYPE'
-        
-      - name: Dump GitHub context
-        id: github_context_step
-        run: echo '${{ toJSON(github) }}'
-        
-      - name: Dump job context
-        run: echo '${{ toJSON(job) }}'
-        
-      - name: Dump steps context
-        run: echo '${{ toJSON(steps) }}'    
-        
-      - name: Dump runner context
-        run: echo '${{ toJSON(runner) }}'
-        
-      - name: Dump strategy context
-        run: echo '${{ toJSON(strategy) }}'
-        
-      - name: Dump matrix context
-        run: echo '${{ toJSON(matrix) }}'
