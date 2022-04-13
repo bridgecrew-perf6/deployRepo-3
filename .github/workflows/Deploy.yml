@@ -107,11 +107,11 @@ jobs:
           if ${{ github.event.inputs.skip-suspense }}; then
               PHP_DEPLOY_COMMAND+=" --skip-suspense"
           fi
-          echo $PHP_DEPLOY_COMMAND;
 
       - name: Run php
         run: |
           cd ./src && 
+          echo $PHP_DEPLOY_COMMAND &&
           "php deploy.php \
           --m2-tag=${{ github.event.inputs.m2-tag }} \
           --pwa-tag=${{ github.event.inputs.pwa-tag }} \
