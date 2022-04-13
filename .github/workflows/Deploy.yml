@@ -91,11 +91,11 @@ jobs:
       
       - name: Prepare commands
         run: |
-          PHP_DEPLOY_COMMAND="php deploy.php";
-          if [[ ${{ github.event.inputs.m2-tag }} ]]; then
+          PHP_DEPLOY_COMMAND="php deploy.php"
+          if [[ "${{ github.event.inputs.m2-tag }}" != "" ]]; then
               PHP_DEPLOY_COMMAND+=" --m2-tag=${{ github.event.inputs.m2-tag }}"
           fi
-          if [[ ${{ github.event.inputs.pwa-tag }} ]]; then
+          if [[ "${{ github.event.inputs.pwa-tag }}" != "" ]]; then
               PHP_DEPLOY_COMMAND+=" --pwa-tag=${{ github.event.inputs.pwa-tag }}"
           fi
           if [[ ${{ github.event.inputs.maintenance }} ]]; then
