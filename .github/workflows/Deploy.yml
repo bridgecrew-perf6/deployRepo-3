@@ -1,7 +1,6 @@
 name: Deploy
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}
-#  cancel-in-progress: true
 on:
   workflow_dispatch:
     inputs:
@@ -66,6 +65,7 @@ jobs:
         with:
           repository: 'AlexeyShishkin2022/deploy'
           ref: 'refs/heads/main'
+          token: $
       
       - name: TEMP List files
         run: ls -la
