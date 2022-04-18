@@ -65,7 +65,7 @@ jobs:
         with:
           repository: 'AlexeyShishkin2022/deploy'
           ref: 'refs/heads/main'
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ACCESS_TOKEN_M2DOCKER_REPO }}
       
       - name: TEMP List files
         run: ls -la
