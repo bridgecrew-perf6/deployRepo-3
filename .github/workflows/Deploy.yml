@@ -67,19 +67,6 @@ jobs:
           ref: 'refs/heads/main'
           token: ${{ secrets.ACCESS_TOKEN_M2DOCKER_REPO }}
       
-      - name: TEMP List files
-        run: ls -la
-    
-      - name: TEMP Show secret data
-        run: |
-          echo ${{ secrets.AWS_ACCESS_KEY_ID }} | sed "s/ /  /g"
-          echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} | sed "s/ /  /g"
-          echo ${{ secrets.AWS_REGION }} | sed "s/ /  /g"
-          echo ${{ secrets.AWS_VPC_NAME }} | sed "s/ /  /g"
-          echo ${{ secrets.AWS_SCRIPTS_GROUP_NAME }} | sed "s/ /  /g"
-          echo ${{ secrets.AWS_ADMIN_GROUP_NAME }} | sed "s/ /  /g"
-          echo ${{ secrets.AWS_FRONTEND_GROUP_NAME }} | sed "s/ /  /g"
-      
       - name: Show enviroment
         run: echo ${{ needs.PrepareDeploy.outputs.enviroment_name }}
 
@@ -113,10 +100,6 @@ jobs:
           cd ./docker-images/aws/php
           php $PHP_DEPLOY_COMMAND
           echo "Return code: $?"
-          if [ $? != 0 ]; then
-              printf "Error when executing command: '$command' $?"
-              exit $ERROR_CODE
-          fi
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
