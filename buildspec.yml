@@ -30,7 +30,7 @@ phases:
       - echo ls
       - ls -la
       - echo Run php deploy.php
-      - php .src/deploy.php
+      - php ./src/deploy.php
     finally:
       - echo This always runs even if the install command fails
   post_build:
