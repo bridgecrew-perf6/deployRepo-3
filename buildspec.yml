@@ -1,0 +1,40 @@
+version: 0.2
+
+env:
+  variables:
+    JAVA_HOME: "trololo"
+  parameter-store:
+    TEST_PARAM_NAME: /CodeBuild/TEST_PARAM
+
+phases:
+  install:
+    commands:
+      - echo Entered the install phase...33333
+      - apt-get update -y
+      - apt-get install -y mc
+    finally:
+      - echo This always runs even if the update or install command fails 
+  pre_build:
+    commands:
+      - echo Entered the pre_build phase...
+ #     - docker login -u User -p $LOGIN_PASSWORD
+    finally:
+      - echo This always runs even if the login command fails 
+  build:
+    commands:
+      - echo Install mc
+      - mc --version
+      - echo Enviroment variable $TEST_PARAM_NAME
+      - echo echo pwd
+      - pwd
+      - echo ls
+      - ls -la
+    finally:
+      - echo This always runs even if the install command fails
+  post_build:
+    commands:
+      - echo Entered the post_build phase...
+      - echo Php version...
+      - php -v
+      - composer --version
+      - git --version
