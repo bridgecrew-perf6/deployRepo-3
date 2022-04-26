@@ -47,8 +47,8 @@ jobs:
           PublicIpAddress=`echo $(jq -r '.Reservations[].Instances[].PublicIpAddress' <<< "$awsEc2Result")`
           AvailabilityZone=`echo $(jq -r '.Reservations[].Instances[].Placement.AvailabilityZone' <<< "$awsEc2Result")`
           echo "::set-output name=InstanceId::$InstanceId"
-          echo "::set-output name=InstanceId::$PublicIpAddress"
-          echo "::set-output name=InstanceId::$AvailabilityZone"
+          echo "::set-output name=PublicIpAddress::$PublicIpAddress"
+          echo "::set-output name=AvailabilityZone::$AvailabilityZone"
           
       - name: Create ssh keys
         run: ssh-keygen -t rsa -b 4096 -C "github-deploy-key" -f ./ssh.key -N ''  
