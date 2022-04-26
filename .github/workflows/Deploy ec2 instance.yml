@@ -55,11 +55,8 @@ jobs:
         
       - name: Set ec2 instance ssh keys
         run: aws ec2-instance-connect send-ssh-public-key --region ${{ secrets.AWS_REGION }} --instance-id ${{ steps.ec2Data.outputs.InstanceId }} --availability-zone ${{ steps.ec2Data.outputs.AvailabilityZone }} --instance-os-user ubuntu --ssh-public-key file://ssh.key.pub
-        
-      - name: Add hostname
-        run: ssh-keygen -R ${{ steps.ec2Data.outputs.PublicIpAddress }}
-
+    
       - name: Connect to server
         run: |
-          ssh -T -o "IdentitiesOnly=yes" -i ssh.key ubuntu@${{ steps.ec2Data.outputs.PublicIpAddress }}
+          ssh -T -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i ssh.key ubuntu@${{ steps.ec2Data.outputs.PublicIpAddress }}
           
