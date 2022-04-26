@@ -47,10 +47,14 @@ jobs:
           PublicIpAddress=`echo $(jq -r '.Reservations[].Instances[].PublicIpAddress' <<< "$awsEc2Result")`
           AvailabilityZone=`echo $(jq -r '.Reservations[].Instances[].Placement.AvailabilityZone' <<< "$awsEc2Result")`
           echo "::set-output name=InstanceId::$InstanceId"
+          echo "::set-output name=InstanceId::$PublicIpAddress"
+          echo "::set-output name=InstanceId::$AvailabilityZone"
+          
       - name: Create ssh keys
         run: ssh-keygen -t rsa -b 4096 -C "github-deploy-key" -f ./ssh.key -N ''  
-    
-          
-      - name: Show instance id
-        run: echo ${{ steps.ec2Data.outputs.InstanceId }}
-          
+        
+      - name: Set ec2 instance ssh keys
+        run: aws ec2-instance-connect send-ssh-public-key --region ${{ secrets.AWS_REGION }} --instance-id ${{ steps.ec2Data.outputs.InstanceId }} --availability-zone ${{ steps.ec2Data.outputs.AvailabilityZone }} --instance-os-user ubuntu --ssh-public-key file://ssh.key.pub
+
+      - name: Connect to server
+        run: echo HI!
