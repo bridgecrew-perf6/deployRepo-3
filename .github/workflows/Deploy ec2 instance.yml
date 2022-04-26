@@ -58,5 +58,5 @@ jobs:
 
       - name: Connect to server
         run: |
-          ssh -o "IdentitiesOnly=yes" -i ssh.key ubuntu@${{ steps.ec2Data.outputs.PublicIpAddress }}
+          ssh -T -o "IdentitiesOnly=yes" -i ssh.key ubuntu@${{ steps.ec2Data.outputs.PublicIpAddress }}
           
