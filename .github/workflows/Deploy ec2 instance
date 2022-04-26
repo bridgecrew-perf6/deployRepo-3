@@ -1,0 +1,38 @@
+name: Deploy
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+on:
+  workflow_dispatch:
+    inputs:
+      m2-tag:
+        description: 'M2 tag'     
+        required: false
+        type: text     
+      pwa-tag:
+        description: 'Pwa tag'     
+        required: false
+        type: text      
+      vendor-update:
+        description: 'Vendor update'
+        type: boolean
+      skip-suspense:
+        description: 'Skip suspense'
+        type: boolean
+      maintenance:
+          description: 'Maintenance'
+          type: boolean
+jobs:
+  AWSDeploy:
+    runs-on: ubuntu-latest
+    steps:
+        
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        if: ${{ always() }} # This ensures that your workflow runs successfully
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      
+      - name: Show ec2 instances
+        run: aws ec2 describe-instances --filters "Name=tag:Type,Values=deploy" "Name=instance-state-code,Values=16" --region ${{ secrets.AWS_REGION }}
