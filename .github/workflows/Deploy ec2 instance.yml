@@ -27,6 +27,8 @@ jobs:
     environment:
         name: stage
     steps:
+      - name: Current enviroment os
+        run: cat /etc/os-release
         
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -58,5 +60,5 @@ jobs:
     
       - name: Connect to server
         run: |
-          ssh -T -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i ssh.key ubuntu@${{ steps.ec2Data.outputs.PublicIpAddress }}
+          ssh -T -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i ssh.key ubuntu@${{ steps.ec2Data.outputs.PublicIpAddress }} < "cat /etc/os-release"
           
