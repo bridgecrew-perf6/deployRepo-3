@@ -24,6 +24,8 @@ on:
 jobs:
   AWSDeploy:
     runs-on: ubuntu-latest
+    environment:
+        name: stage
     steps:
         
       - name: Configure AWS Credentials
