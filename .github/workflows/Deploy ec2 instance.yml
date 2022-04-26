@@ -39,17 +39,18 @@ jobs:
       - name: Show ec2 instances
         run: aws ec2 describe-instances --filters "Name=tag:Type,Values=deploy" "Name=instance-state-code,Values=16" --region ${{ secrets.AWS_REGION }}
 
-      - name: Parse ec2 instances data
+      - name: Prepare ec2 deploy instance data
+        id: ec2Data
         run: |
           awsEc2Result=`aws ec2 describe-instances --filters "Name=tag:Type,Values=deploy" "Name=instance-state-code,Values=16" --region ${{ secrets.AWS_REGION }}`
-          echo $awsEc2Result
           InstanceId=`echo $(jq -r '.Reservations[].Instances[].InstanceId' <<< "$awsEc2Result")`
           PublicIpAddress=`echo $(jq -r '.Reservations[].Instances[].PublicIpAddress' <<< "$awsEc2Result")`
           AvailabilityZone=`echo $(jq -r '.Reservations[].Instances[].Placement.AvailabilityZone' <<< "$awsEc2Result")`
-          echo $InstanceId
-          echo $PublicIpAddress
-          echo $AvailabilityZone
+          echo "::set-output name=InstanceId::$InstanceId"
+      - name: Create ssh keys
+        run: ssh-keygen -t rsa -b 4096 -C "github-deploy-key" -f ./ssh.key -N ''  
+    
           
       - name: Show instance id
-        run: echo $InstanceId
+        run: echo ${{ steps.ec2Data.outputs.InstanceId }}
           
