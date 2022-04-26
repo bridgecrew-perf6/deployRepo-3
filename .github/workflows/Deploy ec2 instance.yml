@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy aws
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}
 on:
