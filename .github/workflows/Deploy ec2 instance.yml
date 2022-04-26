@@ -46,5 +46,10 @@ jobs:
           InstanceId=`echo $(jq -r '.Reservations[].Instances[].InstanceId' <<< "$awsEc2Result")`
           PublicIpAddress=`echo $(jq -r '.Reservations[].Instances[].PublicIpAddress' <<< "$awsEc2Result")`
           AvailabilityZone=`echo $(jq -r '.Reservations[].Instances[].Placement.AvailabilityZone' <<< "$awsEc2Result")`
-          echo PublicIpAddress
-          echo AvailabilityZone
+          echo $InstanceId
+          echo $PublicIpAddress
+          echo $AvailabilityZone
+          
+      - name: Show instance id
+        run: echo $InstanceId
+          
