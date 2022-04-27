@@ -103,7 +103,7 @@ jobs:
           if ${{ github.event.inputs.skip-suspense }}; then
               deployArgs+=' --skip-suspense'
           fi
-          echo '::set-output name=deployArgs::$deployArgs'    
+          echo "::set-output name=deployArgs::$deployArgs"    
       - name: Start deploy
         run: |
           ssh ec2instance <<EOF
