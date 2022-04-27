@@ -33,7 +33,7 @@ jobs:
             echo "::error ::M2 and PWA tag is empty."
             exit 1; 
             
-      - name: Deploy data
+      - name: Log deploy data
         run: |
               echo "::notice::M2 Tag: ${{ github.event.inputs.m2-tag }};" \
               "PWA Tag: ${{ github.event.inputs.pwa-tag }};" \
