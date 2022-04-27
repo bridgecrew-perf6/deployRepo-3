@@ -79,7 +79,10 @@ jobs:
           END
         env:
           SSH_HOST: ${{ steps.ec2Data.outputs.PublicIpAddress }}
-        
+      
+      - name: debug config
+        run: cat ~/.ssh/config
+      
       - name: Create ec2 instance connect
         run: aws ec2-instance-connect send-ssh-public-key --region ${{ secrets.AWS_REGION }} --instance-id ${{ steps.ec2Data.outputs.InstanceId }} --availability-zone ${{ steps.ec2Data.outputs.AvailabilityZone }} --instance-os-user ubuntu --ssh-public-key file://~/.ssh/ssh.key.pub
 
