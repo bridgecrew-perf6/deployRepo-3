@@ -73,7 +73,7 @@ jobs:
           SSH_HOST: ${{ steps.ec2Data.outputs.PublicIpAddress }}
         
       - name: Create ec2 instance connect
-        run: aws ec2-instance-connect send-ssh-public-key --region ${{ secrets.AWS_REGION }} --instance-id ${{ steps.ec2Data.outputs.InstanceId }} --availability-zone ${{ steps.ec2Data.outputs.AvailabilityZone }} --instance-os-user ubuntu --ssh-public-key file://~/.ssh/ssh.key
+        run: aws ec2-instance-connect send-ssh-public-key --region ${{ secrets.AWS_REGION }} --instance-id ${{ steps.ec2Data.outputs.InstanceId }} --availability-zone ${{ steps.ec2Data.outputs.AvailabilityZone }} --instance-os-user ubuntu --ssh-public-key file://~/.ssh/ssh.key.pub
 
       - name: Connect to ssh
         run: ssh ec2instance 'sudo php /var/www/deploy/docker-images/aws/php/deploy.php'
