@@ -55,16 +55,11 @@ jobs:
           echo "::set-output name=InstanceId::$InstanceId"
           echo "::set-output name=PublicIpAddress::$PublicIpAddress"
           echo "::set-output name=AvailabilityZone::$AvailabilityZone"
-          
-      - name: Create ssh keys
-        run: ssh-keygen -t rsa -b 4096 -C "github-deploy-key" -f ~/.ssh/ssh.key -N ''  
-        
-      - name: Create ec2 instance connect
-        run: aws ec2-instance-connect send-ssh-public-key --region ${{ secrets.AWS_REGION }} --instance-id ${{ steps.ec2Data.outputs.InstanceId }} --availability-zone ${{ steps.ec2Data.outputs.AvailabilityZone }} --instance-os-user ubuntu --ssh-public-key ~/.ssh/ssh.key
-
+   
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
+          ssh-keygen -t rsa -b 4096 -C "github-deploy-key" -f ~/.ssh/ssh.key -N ''
           chmod 600 ~/.ssh/ssh.key
           cat >>~/.ssh/config <<END
             Host ec2instance
@@ -77,6 +72,9 @@ jobs:
         env:
           SSH_HOST: ${{ steps.ec2Data.outputs.PublicIpAddress }}
         
+      - name: Create ec2 instance connect
+        run: aws ec2-instance-connect send-ssh-public-key --region ${{ secrets.AWS_REGION }} --instance-id ${{ steps.ec2Data.outputs.InstanceId }} --availability-zone ${{ steps.ec2Data.outputs.AvailabilityZone }} --instance-os-user ubuntu --ssh-public-key file://~/.ssh/ssh.key
+
       - name: Connect to ssh
         run: ssh ec2instance 'sudo php /var/www/deploy/docker-images/aws/php/deploy.php'
  
