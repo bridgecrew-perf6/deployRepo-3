@@ -55,9 +55,12 @@ jobs:
           InstanceId=`echo $(jq -r ".Reservations[].Instances[].InstanceId" <<< "$awsEc2Result")`
           PublicIpAddress=`echo $(jq -r ".Reservations[].Instances[].PublicIpAddress" <<< "$awsEc2Result")`
           AvailabilityZone=`echo $(jq -r ".Reservations[].Instances[].Placement.AvailabilityZone" <<< "$awsEc2Result")`
-          echo "::set-output name=InstanceId::$InstanceId"
+          echo "::set-output name=InstanceId::"+$(jq -r ".Reservations[].Instances[].InstanceId" <<< "$awsEc2Result")
           echo "::set-output name=PublicIpAddress::$PublicIpAddress"
           echo "::set-output name=AvailabilityZone::$AvailabilityZone"
+   
+      - name: Echo instanceId
+        run: echo ${{ steps.ec2Data.outputs.InstanceId }}
    
       - name: Check deploy server
         if: ${{ steps.ec2Data.outputs.InstanceId == '' && steps.ec2Data.outputs.PublicIpAddress == '' }}
