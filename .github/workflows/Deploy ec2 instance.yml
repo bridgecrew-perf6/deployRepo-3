@@ -57,12 +57,30 @@ jobs:
           echo "::set-output name=AvailabilityZone::$AvailabilityZone"
           
       - name: Create ssh keys
-        run: ssh-keygen -t rsa -b 4096 -C "github-deploy-key" -f ./ssh.key -N ''  
+        run: ssh-keygen -t rsa -b 4096 -C "github-deploy-key" -f ~/.ssh/ssh.key -N ''  
         
       - name: Create ec2 instance connect
-        run: aws ec2-instance-connect send-ssh-public-key --region ${{ secrets.AWS_REGION }} --instance-id ${{ steps.ec2Data.outputs.InstanceId }} --availability-zone ${{ steps.ec2Data.outputs.AvailabilityZone }} --instance-os-user ubuntu --ssh-public-key file://ssh.key.pub
-    
-      - name: Connect to server and start deploy
+        run: aws ec2-instance-connect send-ssh-public-key --region ${{ secrets.AWS_REGION }} --instance-id ${{ steps.ec2Data.outputs.InstanceId }} --availability-zone ${{ steps.ec2Data.outputs.AvailabilityZone }} --instance-os-user ubuntu --ssh-public-key file://~/.ssh/ssh.key
+
+      - name: Configure SSH
         run: |
-          ssh -T -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i ssh.key ubuntu@${{ steps.ec2Data.outputs.PublicIpAddress }} LocalCommand="sudo php /var/www/deploy/docker-images/aws/php/deploy.php"
+          mkdir -p ~/.ssh/
+          chmod 600 ~/.ssh/ssh.key
+          cat >>~/.ssh/config <<END
+            Host ec2instance
+            HostName $SSH_HOST
+            User ubuntu
+            IdentityFile ~/.ssh/ssh.key
+            StrictHostKeyChecking no
+            IdentitiesOnly yes
+          END
+        env:
+          SSH_HOST: ${{ steps.ec2Data.outputs.PublicIpAddress }}
+        
+      - name: Connect to ssh
+        run: ssh ec2instance 'sudo php /var/www/deploy/docker-images/aws/php/deploy.php'
+ 
+#      - name: Connect to server and start deploy
+#        run: |
+#          ssh -T -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i ssh.key ubuntu@${{ steps.ec2Data.outputs.PublicIpAddress }} LocalCommand="sudo php /var/www/deploy/docker-images/aws/php/deploy.php"
         
