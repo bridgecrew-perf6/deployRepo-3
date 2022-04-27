@@ -114,5 +114,5 @@ jobs:
             export AWS_FRONTEND_GROUP_NAME="${{ secrets.AWS_FRONTEND_GROUP_NAME }}";
             echo $AWS_ACCESS_KEY_ID; 
             echo $AWS_CONFIG_SET; 
-            php /var/www/deploy/docker-images/aws/php/deploy.php ${{ steps.deployArgs.outputs.deployArgs }}
+            php /var/deploy/docker-images/aws/php/deploy.php ${{ steps.deployArgs.outputs.deployArgs }}
           EOF
