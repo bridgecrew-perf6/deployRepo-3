@@ -1,4 +1,4 @@
-name: Deploy aws
+name: Staging deploy
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}
 on:
@@ -22,7 +22,7 @@ on:
           description: 'Maintenance'
           type: boolean
 jobs:
-  AWSDeploy:
+  Deploy:
     runs-on: ubuntu-latest
     environment:
         name: stage
