@@ -35,8 +35,7 @@ jobs:
             
       - name: Deploy data
         run: |
-              echo "::notice::Enviroment: ${{ steps.branch_check.outputs.enviroment_name }};" \
-              "M2 Tag: ${{ github.event.inputs.m2-tag }};" \
+              echo "::notice::M2 Tag: ${{ github.event.inputs.m2-tag }};" \
               "PWA Tag: ${{ github.event.inputs.pwa-tag }};" \
               "Vendor update: ${{ github.event.inputs.vendor-update }};" \
               "Skip suspense: ${{ github.event.inputs.skip-suspense }};" \
@@ -53,9 +52,9 @@ jobs:
         id: ec2Data
         run: |
           awsEc2Result=`aws ec2 describe-instances --filters "Name=tag:Type,Values=deploy" "Name=instance-state-code,Values=16" --region ${{ secrets.AWS_REGION }}`
-          InstanceId=`echo $(jq -r '.Reservations[].Instances[].InstanceId' <<< "$awsEc2Result")`
-          PublicIpAddress=`echo $(jq -r '.Reservations[].Instances[].PublicIpAddress' <<< "$awsEc2Result")`
-          AvailabilityZone=`echo $(jq -r '.Reservations[].Instances[].Placement.AvailabilityZone' <<< "$awsEc2Result")`
+          InstanceId=`echo $(jq -r ".Reservations[].Instances[].InstanceId" <<< "$awsEc2Result")`
+          PublicIpAddress=`echo $(jq -r ".Reservations[].Instances[].PublicIpAddress" <<< "$awsEc2Result")`
+          AvailabilityZone=`echo $(jq -r ".Reservations[].Instances[].Placement.AvailabilityZone" <<< "$awsEc2Result")`
           echo '::set-output name=InstanceId::$InstanceId'
           echo '::set-output name=PublicIpAddress::$PublicIpAddress'
           echo '::set-output name=AvailabilityZone::$AvailabilityZone'
