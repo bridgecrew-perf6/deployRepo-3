@@ -60,5 +60,5 @@ jobs:
     
       - name: Connect to server
         run: |
-          ssh -T -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i ssh.key ubuntu@${{ steps.ec2Data.outputs.PublicIpAddress }} LocalCommand="php /var/www/deploy/docker-images/aws/php/deploy.php"
+          ssh -T -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i ssh.key ubuntu@${{ steps.ec2Data.outputs.PublicIpAddress }} LocalCommand="sudo php /var/www/deploy/docker-images/aws/php/deploy.php"
         
