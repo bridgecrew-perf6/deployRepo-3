@@ -27,9 +27,13 @@ jobs:
     environment:
         name: stage
     steps:
-      - name: Current enviroment os
-        run: cat /etc/os-release
-        
+    
+#
+# Check tags
+#
+# Check concurency ?
+#
+    
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         if: ${{ always() }} # This ensures that your workflow runs successfully
@@ -55,10 +59,10 @@ jobs:
       - name: Create ssh keys
         run: ssh-keygen -t rsa -b 4096 -C "github-deploy-key" -f ./ssh.key -N ''  
         
-      - name: Set ec2 instance ssh keys
+      - name: Create ec2 instance connect
         run: aws ec2-instance-connect send-ssh-public-key --region ${{ secrets.AWS_REGION }} --instance-id ${{ steps.ec2Data.outputs.InstanceId }} --availability-zone ${{ steps.ec2Data.outputs.AvailabilityZone }} --instance-os-user ubuntu --ssh-public-key file://ssh.key.pub
     
-      - name: Connect to server
+      - name: Connect to server and start deploy
         run: |
           ssh -T -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i ssh.key ubuntu@${{ steps.ec2Data.outputs.PublicIpAddress }} LocalCommand="sudo php /var/www/deploy/docker-images/aws/php/deploy.php"
         
