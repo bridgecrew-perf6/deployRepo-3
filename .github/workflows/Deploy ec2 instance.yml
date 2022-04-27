@@ -81,23 +81,23 @@ jobs:
       - name: Prepare arguments
         id: deployArgs
         run: |
-          PHP_DEPLOY_COMMAND="/var/www/deploy/docker-images/aws/php/deploy.php"
+          deployArgs=""
           if [[ "${{ github.event.inputs.m2-tag }}" != "" ]]; then
-              PHP_DEPLOY_COMMAND+=" --m2-tag=${{ github.event.inputs.m2-tag }}"
+              deployArgs+=" --m2-tag=${{ github.event.inputs.m2-tag }}"
           fi
           if [[ "${{ github.event.inputs.pwa-tag }}" != "" ]]; then
-              PHP_DEPLOY_COMMAND+=" --pwa-tag=${{ github.event.inputs.pwa-tag }}"
+              deployArgs+=" --pwa-tag=${{ github.event.inputs.pwa-tag }}"
           fi
           if ${{ github.event.inputs.maintenance }}; then
-              PHP_DEPLOY_COMMAND+=" --maintenance"
+              deployArgs+=" --maintenance"
           fi
           if ${{ github.event.inputs.vendor-update }}; then
-              PHP_DEPLOY_COMMAND+=" --vendor-update"
+              deployArgs+=" --vendor-update"
           fi
           if ${{ github.event.inputs.skip-suspense }}; then
-              PHP_DEPLOY_COMMAND+=" --skip-suspense"
+              deployArgs+=" --skip-suspense"
           fi
-          echo "::set-output name=phpDeployCommand::$PHP_DEPLOY_COMMAND"      
+          echo "::set-output name=deployArgs::$deployArgs"      
       - name: Connect to ssh
         run: |
           ssh ec2instance <<END
@@ -111,7 +111,7 @@ jobs:
             export AWS_FRONTEND_GROUP_NAME="${{ secrets.AWS_FRONTEND_GROUP_NAME }}";
             echo $AWS_ACCESS_KEY_ID; 
             echo $AWS_CONFIG_SET; 
-            php /var/www/deploy/docker-images/aws/php/deploy.php ${{ steps.deployArgs.outputs.phpDeployCommand }}
+            php /var/www/deploy/docker-images/aws/php/deploy.php ${{ steps.deployArgs.outputs.deployArgs }}
           END
  
 #      - name: Connect to server and start deploy
