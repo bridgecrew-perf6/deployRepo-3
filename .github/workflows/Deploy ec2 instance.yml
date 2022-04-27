@@ -27,13 +27,21 @@ jobs:
     environment:
         name: stage
     steps:
-    
-#
-# Check tags
-#
-# Check concurency ?
-#
-    
+      - name: Check tags
+        if: ${{ github.event.inputs.m2-tag == '' && github.event.inputs.pwa-tag == '' }}
+        run: |
+            echo "::error ::M2 and PWA tag is empty."
+            exit 1; 
+            
+      - name: Deploy data
+        run: |
+              echo "::notice::Enviroment: ${{ steps.branch_check.outputs.enviroment_name }};" \
+              "M2 Tag: ${{ github.event.inputs.m2-tag }};" \
+              "PWA Tag: ${{ github.event.inputs.pwa-tag }};" \
+              "Vendor update: ${{ github.event.inputs.vendor-update }};" \
+              "Skip suspense: ${{ github.event.inputs.skip-suspense }};" \
+              "Maintenance: ${{ github.event.inputs.maintenance }}" 
+              
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         if: ${{ always() }} # This ensures that your workflow runs successfully
@@ -41,39 +49,39 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-      
-      - name: Show ec2 instances
-        run: aws ec2 describe-instances --filters "Name=tag:Type,Values=deploy" "Name=instance-state-code,Values=16" --region ${{ secrets.AWS_REGION }}
 
       - name: Prepare ec2 deploy instance data
         id: ec2Data
         run: |
-          awsEc2Result=`aws ec2 describe-instances --filters "Name=tag:Type,Values=deploy" "Name=instance-state-code,Values=16" --region ${{ secrets.AWS_REGION }}`
+          awsEc2Result=`aws ec2 describe-instances --filters 'Name=tag:Type,Values=deploy' 'Name=instance-state-code,Values=16' --region ${{ secrets.AWS_REGION }}`
           InstanceId=`echo $(jq -r '.Reservations[].Instances[].InstanceId' <<< "$awsEc2Result")`
           PublicIpAddress=`echo $(jq -r '.Reservations[].Instances[].PublicIpAddress' <<< "$awsEc2Result")`
           AvailabilityZone=`echo $(jq -r '.Reservations[].Instances[].Placement.AvailabilityZone' <<< "$awsEc2Result")`
-          echo "::set-output name=InstanceId::$InstanceId"
-          echo "::set-output name=PublicIpAddress::$PublicIpAddress"
-          echo "::set-output name=AvailabilityZone::$AvailabilityZone"
+          echo '::set-output name=InstanceId::$InstanceId'
+          echo '::set-output name=PublicIpAddress::$PublicIpAddress'
+          echo '::set-output name=AvailabilityZone::$AvailabilityZone'
+   
+      - name: Check deploy server
+        if: ${{ steps.ec2Data.outputs.InstanceId == '' && steps.ec2Data.outputs.PublicIpAddress == '' }}
+        run: |
+            echo "::error ::Deploy server not found."
+            exit 1; 
    
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
-          ssh-keygen -t rsa -b 4096 -C "github-deploy-key" -f ~/.ssh/ssh.key -N ''
+          ssh-keygen -t rsa -b 4096 -C 'github-deploy-key' -f ~/.ssh/ssh.key -N ''
           chmod 600 ~/.ssh/ssh.key
-          cat >>~/.ssh/config <<END
+          cat >>~/.ssh/config <<EOF
             Host ec2instance
             HostName $SSH_HOST
             User ubuntu
             IdentityFile ~/.ssh/ssh.key
             StrictHostKeyChecking no
             IdentitiesOnly yes
-          END
+          EOF
         env:
           SSH_HOST: ${{ steps.ec2Data.outputs.PublicIpAddress }}
-      
-      - name: debug config
-        run: cat ~/.ssh/config
               
       - name: Create ec2 instance connect
         run: aws ec2-instance-connect send-ssh-public-key --region ${{ secrets.AWS_REGION }} --instance-id ${{ steps.ec2Data.outputs.InstanceId }} --availability-zone ${{ steps.ec2Data.outputs.AvailabilityZone }} --instance-os-user ubuntu --ssh-public-key file://~/.ssh/ssh.key.pub
@@ -81,26 +89,26 @@ jobs:
       - name: Prepare arguments
         id: deployArgs
         run: |
-          deployArgs=""
-          if [[ "${{ github.event.inputs.m2-tag }}" != "" ]]; then
-              deployArgs+=" --m2-tag=${{ github.event.inputs.m2-tag }}"
+          deployArgs=''
+          if [[ '${{ github.event.inputs.m2-tag }}' != '' ]]; then
+              deployArgs+=' --m2-tag=${{ github.event.inputs.m2-tag }}'
           fi
-          if [[ "${{ github.event.inputs.pwa-tag }}" != "" ]]; then
-              deployArgs+=" --pwa-tag=${{ github.event.inputs.pwa-tag }}"
+          if [[ '${{ github.event.inputs.pwa-tag }}' != '' ]]; then
+              deployArgs+=' --pwa-tag=${{ github.event.inputs.pwa-tag }}'
           fi
           if ${{ github.event.inputs.maintenance }}; then
-              deployArgs+=" --maintenance"
+              deployArgs+=' --maintenance'
           fi
           if ${{ github.event.inputs.vendor-update }}; then
-              deployArgs+=" --vendor-update"
+              deployArgs+=' --vendor-update'
           fi
           if ${{ github.event.inputs.skip-suspense }}; then
-              deployArgs+=" --skip-suspense"
+              deployArgs+=' --skip-suspense'
           fi
-          echo "::set-output name=deployArgs::$deployArgs"      
-      - name: Connect to ssh
+          echo '::set-output name=deployArgs::$deployArgs'    
+      - name: Start deploy
         run: |
-          ssh ec2instance <<END
+          ssh ec2instance <<EOF
             export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}";
             export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}";
             export AWS_REGION="${{ secrets.AWS_REGION }}";
@@ -112,9 +120,4 @@ jobs:
             echo $AWS_ACCESS_KEY_ID; 
             echo $AWS_CONFIG_SET; 
             php /var/www/deploy/docker-images/aws/php/deploy.php ${{ steps.deployArgs.outputs.deployArgs }}
-          END
- 
-#      - name: Connect to server and start deploy
-#        run: |
-#          ssh -T -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i ssh.key ubuntu@${{ steps.ec2Data.outputs.PublicIpAddress }} LocalCommand="sudo php /var/www/deploy/docker-images/aws/php/deploy.php"
-        
+          EOF
