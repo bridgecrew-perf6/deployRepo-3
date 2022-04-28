@@ -31,5 +31,13 @@ jobs:
         run: |
             echo $AWS_ACCESS_KEY_ID
             curl http://169.254.169.254/latest/meta-data/instance-id
-            
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_CONFIG_SET: ${{ needs.PrepareDeploy.outputs.enviroment_name }}"
+          AWS_VPC_NAME: ${{ secrets.AWS_VPC_NAME }}
+          AWS_SCRIPTS_GROUP_NAME: ${{ secrets.AWS_SCRIPTS_GROUP_NAME }}
+          AWS_ADMIN_GROUP_NAME: ${{ secrets.AWS_ADMIN_GROUP_NAME }}
+          AWS_FRONTEND_GROUP_NAME: ${{ secrets.AWS_FRONTEND_GROUP_NAME }}    
             
