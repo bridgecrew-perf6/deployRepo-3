@@ -1,0 +1,35 @@
+name: Self runner deploy
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+on:
+  workflow_dispatch:
+    inputs:
+      m2-tag:
+        description: 'M2 tag'     
+        required: false
+        type: text     
+      pwa-tag:
+        description: 'Pwa tag'     
+        required: false
+        type: text      
+      vendor-update:
+        description: 'Vendor update'
+        type: boolean
+      skip-suspense:
+        description: 'Skip suspense'
+        type: boolean
+      maintenance:
+          description: 'Maintenance'
+          type: boolean
+jobs:
+  Deploy:
+    runs-on: self-hosted
+    environment:
+        name: stage
+    steps:
+      - name: Echo enviroment variables
+        run: |
+            echo $AWS_ACCESS_KEY_ID
+            curl http://169.254.169.254/latest/meta-data/instance-id
+            
+            
