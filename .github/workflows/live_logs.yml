@@ -1,0 +1,15 @@
+name: Live logs
+on:
+  workflow_dispatch:
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hi
+        run: echo "Hi!"
+      
+      - name: Checkout
+        uses: actions/checkout@v3
+          
+      - name: Start logs
+        run: php ./github_workflog_live_logs.php
