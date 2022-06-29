@@ -1,0 +1,45 @@
+name: Self runner deploy
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+    inputs:
+      m2-tag:
+        description: 'M2 tag'     
+        required: false
+        type: text     
+      pwa-tag:
+        description: 'Pwa tag'     
+        required: false
+        type: text      
+      vendor-update:
+        description: 'Vendor update'
+        type: boolean
+      skip-suspense:
+        description: 'Skip suspense'
+        type: boolean
+      maintenance:
+          description: 'Maintenance'
+          type: boolean
+jobs:
+  Deploy:
+    runs-on: self-hosted
+    environment:
+        name: stage
+    steps:
+      - name: Echo enviroment variables
+        run: |
+            echo $AWS_ACCESS_KEY_ID
+            curl http://169.254.169.254/latest/meta-data/instance-id
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_CONFIG_SET: ${{ needs.PrepareDeploy.outputs.enviroment_name }}"
+          AWS_VPC_NAME: ${{ secrets.AWS_VPC_NAME }}
+          AWS_SCRIPTS_GROUP_NAME: ${{ secrets.AWS_SCRIPTS_GROUP_NAME }}
+          AWS_ADMIN_GROUP_NAME: ${{ secrets.AWS_ADMIN_GROUP_NAME }}
+          AWS_FRONTEND_GROUP_NAME: ${{ secrets.AWS_FRONTEND_GROUP_NAME }}    
+            
