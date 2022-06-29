@@ -2,6 +2,7 @@ name: Self runner deploy
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}
 on:
+  pull_request:
   push:
   workflow_dispatch:
     inputs:
